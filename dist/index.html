@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markdown Previewer</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Outfit:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/assets/index-BMszohsc.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DGFqDG4j.css">
+  </head>
+  <body>
+    <!-- Background Decor -->
+    <div class="bg-gradient-1"></div>
+    <div class="bg-gradient-2"></div>
+
+    <div class="app-container">
+      <header class="glass-header">
+        <div class="logo-section">
+          <div class="logo-icon">✨</div>
+          <h1>MD Previewer</h1>
+        </div>
+        <div class="toolbar">
+          <button
+            id="clear-btn"
+            class="icon-btn"
+            aria-label="Clear Editor"
+            title="Clear All"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-split">
+        <!-- Editor Section -->
+        <section class="pane editor-pane glass-panel">
+          <div class="pane-header">
+            <div class="pane-title">
+              <svg
+                class="pane-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
+                />
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
+                />
+              </svg>
+              <span>Editor</span>
+            </div>
+            <span class="badge">Markdown</span>
+          </div>
+          <div class="editor-wrapper">
+            <textarea
+              id="editor"
+              placeholder="# Start creating something amazing..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Preview Section -->
+        <section class="pane preview-pane glass-panel">
+          <div class="pane-header">
+            <div class="pane-title">
+              <svg
+                class="pane-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 16v-4M12 8h.01" />
+              </svg>
+              <span>Preview</span>
+            </div>
+            <span class="badge">HTML</span>
+          </div>
+          <div id="preview" class="markdown-body custom-scroll">
+            <!-- Content renders here -->
+          </div>
+        </section>
+      </main>
+
+      <footer class="glass-footer">
+        <p>
+          Designed with <span style="color: #ff6b6b">❤</span> using Vite &
+          Vanilla JS
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

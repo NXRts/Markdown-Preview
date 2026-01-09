@@ -223,12 +223,18 @@ textarea#editor::placeholder {
   font-family: var(--font-code);
   padding: 0.2em 0.4em;
 }
+
+.markdown-body pre code {
+  background: transparent !important;
+  padding: 0 !important;
+}
 .markdown-body pre {
   background: #1a1b26 !important; /* Tokyo night bg match */
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 1.5rem;
   border: 1px solid var(--glass-border);
+  overflow-x: auto;
 }
 
 .markdown-body table {
@@ -240,7 +246,6 @@ textarea#editor::placeholder {
   display: block;
   overflow-x: auto;
 }
-
 
 .markdown-body th,
 .markdown-body td {
@@ -269,7 +274,8 @@ textarea#editor::placeholder {
   font-style: italic;
 }
 
-.markdown-body ul, .markdown-body ol {
+.markdown-body ul,
+.markdown-body ol {
   padding-left: 2rem;
   margin-bottom: 1.5rem;
 }
@@ -288,7 +294,6 @@ textarea#editor::placeholder {
 .markdown-body a:hover {
   border-bottom-color: var(--secondary-glow);
 }
-
 
 /* Buttons */
 .icon-btn {
@@ -324,13 +329,59 @@ textarea#editor::placeholder {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
+  :root {
+    --spacing-md: 0.75rem;
+  }
+
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  .app-container {
+    padding: 0.75rem;
+    height: auto;
+    min-height: 100vh;
+    gap: 0.75rem;
+  }
+
   .main-split {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.75rem;
   }
-  .app-container {
-    padding: 0.5rem;
+
+  .pane {
+    min-height: 350px;
+  }
+
+  textarea#editor {
+    padding: 1rem;
+    font-size: 14px;
+  }
+
+  #preview {
+    padding: 1.25rem;
+  }
+
+  /* Adjust typography in the preview */
+  .markdown-body h1 {
+    font-size: 1.5rem;
+  }
+  .markdown-body h2 {
+    font-size: 1.25rem;
+  }
+  .markdown-body h3 {
+    font-size: 1.1rem;
+  }
+
+  .glass-header,
+  .glass-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo-section h1 {
+    font-size: 1.1rem;
   }
 }

@@ -1,103 +1,261 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" data-theme="cyber">
   <head>
     <meta charset="UTF-8" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Markdown Previewer</title>
-    <!-- Premium Fonts -->
+    <title>Markdown Previewer Studio</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Outfit:wght@100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- KaTeX CSS & JS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+    ></script>
+
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <!-- Background Decor -->
-    <div class="bg-gradient-1"></div>
-    <div class="bg-gradient-2"></div>
+    <!-- Dynamic Ambient Background Glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
 
     <div class="app-container">
+      <!-- Main Studio Header Toolbar -->
       <header class="glass-header">
-        <div class="logo-section">
-          <div class="logo-icon">✨</div>
-          <h1>MD Previewer</h1>
+        <div class="header-left">
+          <div class="logo-badge">
+            <span class="logo-icon">⚡</span>
+            <div class="logo-text">
+              <h1>MD Studio</h1>
+              <span class="logo-sub">Pro Previewer</span>
+            </div>
+          </div>
+
+          <!-- Document Tab Manager -->
+          <div class="doc-manager">
+            <button id="doc-selector-btn" class="dropdown-trigger-btn" title="Kelola Dokumen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              <span id="active-doc-title">Guide Note</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div id="doc-dropdown" class="dropdown-menu hidden">
+              <div class="dropdown-header">Dokumen Saya</div>
+              <div id="doc-list" class="doc-list-container">
+                <!-- Dynamically populated -->
+              </div>
+              <div class="dropdown-divider"></div>
+              <button id="btn-new-doc" class="dropdown-item">
+                <span>➕ Dokumen Baru</span>
+              </button>
+              <button id="btn-rename-doc" class="dropdown-item">
+                <span>✏️ Ubah Nama Dokumen</span>
+              </button>
+              <button id="btn-delete-doc" class="dropdown-item danger">
+                <span>🗑️ Hapus Dokumen Ini</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="toolbar">
-          <button
-            id="clear-btn"
-            class="icon-btn"
-            aria-label="Clear Editor"
-            title="Clear All"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"
-              />
+
+        <!-- Center Controls: Templates -->
+        <div class="header-center">
+          <div class="template-selector">
+            <select id="preset-template-select" class="custom-select" title="Pilih Template Siap Pakai">
+              <option value="" disabled selected>📋 Template Presets</option>
+              <option value="tutorial">📝 Panduan Markdown</option>
+              <option value="readme">🚀 Project README</option>
+              <option value="bug_report">🐛 Bug Report</option>
+              <option value="tech_doc">📄 Dokumentasi Teknis</option>
+              <option value="math_diagram">📐 Rumus & Diagram</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Header Right: Theme, View Switcher & Export -->
+        <div class="header-right">
+          <!-- View Modes -->
+          <div class="view-mode-group">
+            <button id="view-split" class="view-btn active" title="Split View Mode">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <line x1="12" y1="3" x2="12" y2="21"/>
+              </svg>
+              <span class="btn-label">Split</span>
+            </button>
+            <button id="view-editor" class="view-btn" title="Editor Only">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              <span class="btn-label">Editor</span>
+            </button>
+            <button id="view-preview" class="view-btn" title="Preview Only">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <span class="btn-label">Preview</span>
+            </button>
+          </div>
+
+          <!-- Theme Selector -->
+          <div class="theme-selector-container">
+            <select id="theme-select" class="custom-select icon-select" title="Pilih Tema Warna">
+              <option value="cyber">🔮 Cyber Purple</option>
+              <option value="midnight">🌃 Midnight OLED</option>
+              <option value="nord">❄️ Nordic Slate</option>
+              <option value="emerald">🟢 Emerald Cyber</option>
+              <option value="sunset">🌅 Sunset Neon</option>
+              <option value="light">☀️ Clean Light</option>
+            </select>
+          </div>
+
+          <!-- Export Dropdown -->
+          <div class="export-dropdown-wrapper">
+            <button id="export-trigger-btn" class="primary-btn" title="Opsi Ekspor">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Export</span>
+            </button>
+            <div id="export-menu" class="dropdown-menu right hidden">
+              <button id="btn-export-md" class="dropdown-item">
+                <span>📥 Unduh (.md)</span>
+              </button>
+              <button id="btn-export-html" class="dropdown-item">
+                <span>🌐 Unduh HTML Ready (.html)</span>
+              </button>
+              <button id="btn-copy-raw" class="dropdown-item">
+                <span>📋 Salin Raw Markdown</span>
+              </button>
+              <button id="btn-copy-html" class="dropdown-item">
+                <span>📋 Salin Rendered HTML</span>
+              </button>
+              <div class="dropdown-divider"></div>
+              <button id="btn-print-pdf" class="dropdown-item">
+                <span>🖨️ Cetak / Save PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Fullscreen Toggle -->
+          <button id="btn-fullscreen" class="icon-btn" title="Mode Layar Penuh">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
             </svg>
           </button>
         </div>
       </header>
 
-      <main class="main-split">
+      <!-- Formatting Action Bar (Above Editor) -->
+      <div class="formatting-toolbar">
+        <div class="format-group">
+          <button class="fmt-btn" data-action="bold" title="Tebal (Ctrl+B)"><b>B</b></button>
+          <button class="fmt-btn" data-action="italic" title="Miring (Ctrl+I)"><i>I</i></button>
+          <button class="fmt-btn" data-action="strike" title="Coret"><s>S</s></button>
+          <button class="fmt-btn" data-action="code" title="Inline Code"><code>&lt;&gt;</code></button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+          <button class="fmt-btn" data-action="h1" title="Heading 1">H1</button>
+          <button class="fmt-btn" data-action="h2" title="Heading 2">H2</button>
+          <button class="fmt-btn" data-action="h3" title="Heading 3">H3</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+          <button class="fmt-btn" data-action="ul" title="Unordered List">• List</button>
+          <button class="fmt-btn" data-action="ol" title="Ordered List">1. List</button>
+          <button class="fmt-btn" data-action="task" title="Checklist Task">☑ Task</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+          <button class="fmt-btn" data-action="quote" title="Blockquote">” Quote</button>
+          <button class="fmt-btn" data-action="codeblock" title="Blok Kode">``` Code</button>
+          <button class="fmt-btn" data-action="table" title="Sisipkan Tabel">📊 Table</button>
+          <button class="fmt-btn" data-action="link" title="Sisipkan Link">🔗 Link</button>
+          <button class="fmt-btn" data-action="image" title="Sisipkan Gambar">🖼️ Image</button>
+          <button class="fmt-btn" data-action="math" title="Sisipkan Rumus Matematika (KaTeX)">∑ Math</button>
+          <button class="fmt-btn" data-action="mermaid" title="Sisipkan Diagram (Mermaid.js)">🧬 Diagram</button>
+          <button class="fmt-btn" data-action="hr" title="Garis Horizontal">— Line</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group right-align">
+          <button id="btn-clear-editor" class="fmt-btn danger-fmt" title="Bersihkan Editor">🗑️ Clear</button>
+        </div>
+      </div>
+
+      <!-- Main Split Area -->
+      <main class="main-split view-mode-split" id="main-content">
         <!-- Editor Section -->
-        <section class="pane editor-pane glass-panel">
+        <section class="pane editor-pane glass-panel" id="editor-section">
           <div class="pane-header">
             <div class="pane-title">
-              <svg
-                class="pane-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path
-                  d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
-                />
-                <path
-                  d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
-                />
+              <svg class="pane-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
               </svg>
-              <span>Editor</span>
+              <span>EDITOR</span>
             </div>
-            <span class="badge">Markdown</span>
+            <div class="pane-tools">
+              <span class="badge">GFM + KaTeX + Mermaid</span>
+            </div>
           </div>
-          <div class="editor-wrapper">
+          
+          <div class="editor-wrapper" id="drop-zone">
+            <div class="drop-overlay hidden" id="drop-overlay">
+              <div class="drop-message">
+                <span class="drop-icon">📁</span>
+                <p>Lepaskan file .md / .txt di sini untuk membuka</p>
+              </div>
+            </div>
             <textarea
               id="editor"
-              placeholder="# Start creating something amazing..."
+              placeholder="# Mulai menulis Markdown di sini..."
               spellcheck="false"
             ></textarea>
           </div>
         </section>
 
         <!-- Preview Section -->
-        <section class="pane preview-pane glass-panel">
+        <section class="pane preview-pane glass-panel" id="preview-section">
           <div class="pane-header">
             <div class="pane-title">
-              <svg
-                class="pane-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 16v-4M12 8h.01" />
+              <svg class="pane-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+
+                <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              <span>Preview</span>
+              <span>LIVE PREVIEW</span>
             </div>
-            <span class="badge">HTML</span>
+            <div class="pane-tools">
+              <span class="badge badge-accent" id="rendering-status">Ready</span>
+            </div>
           </div>
           <div id="preview" class="markdown-body custom-scroll">
             <!-- Content renders here -->
@@ -105,12 +263,38 @@
         </section>
       </main>
 
+      <!-- Footer Live Stats & Info -->
       <footer class="glass-footer">
-        <p>
-          Designed with <span style="color: #ff6b6b">❤</span> by NXRts
-        </p>
+        <div class="footer-stats">
+          <span class="stat-item"><strong id="stat-words">0</strong> Kata</span>
+          <span class="stat-bullet">•</span>
+          <span class="stat-item"><strong id="stat-chars">0</strong> Karakter</span>
+          <span class="stat-bullet">•</span>
+          <span class="stat-item"><strong id="stat-lines">0</strong> Baris</span>
+          <span class="stat-bullet">•</span>
+          <span class="stat-item">⏱️ <strong id="stat-reading">~0 min</strong> baca</span>
+        </div>
+
+        <div class="footer-center">
+          <button id="btn-toggle-sync" class="sync-btn active" title="Toggle Synchronized Scrolling">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>Sync Scroll: ON</span>
+          </button>
+        </div>
+
+        <div class="footer-right">
+          <p>
+            MD Studio • Designed with <span class="heart-pulse">❤️</span> by NXRts
+          </p>
+        </div>
       </footer>
     </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>
